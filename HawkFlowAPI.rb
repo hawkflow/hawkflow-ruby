@@ -7,11 +7,15 @@ require_relative 'Validation'
 
 class HawkFlowAPI
     @@hawkFlowApiUrl = "https://api.hawkflow.ai/v1"
-    @@max_retries = 3
     @@retry_count = 0
     @@success = false
     @@response = nil
 
+    def initialize(api_key="", max_retries=3, wait_time=0.1)
+        @api_key = api_key
+        @max_retries = max_retries
+        @wait_time = wait_time
+    
     def self.metrics(process, meta, items, api_key = "")
         url = URI(hawkFlowApiUrl + "/metrics")
         Endpoints.metric_data(process, meta, items)
@@ -33,21 +37,21 @@ class HawkFlowAPI
 
     def self.hawkflow_post(url, data, api_key)
         begin
-            Validation.validateApiKey(apiKey);
+            @api_key = Validation.validateApiKey(apiKey);
 
-            while !success && retry_count < max_retries do
+            while !success && retry_count < @max_retries do
                 begin
                     http = Net::HTTP.new(uri.host, uri.port)
                     request = Net::HTTP::Post.new(url)
                     request["Content-Type"] = "application/json"
-                    request["hawkflow-api-key"] = api_key                                
+                    request["hawkflow-api-key"] = @api_key                                
                     request.body = data
                     response = http.request(request)
                     success = response.is_a?(Net::HTTPSuccess)                
                 rescue Exception => e
                     retry_count += 1
                     puts "HawkFlowAPI Error: #{e.message}. Retrying..."
-                    sleep 1
+                    sleep @wait_time
                 end
             end
 

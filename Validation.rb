@@ -19,6 +19,8 @@ class Validation
         else
             raise HawkFlowApiKeyFormatException.new()
         end
+
+        return api_key
     end
   
     def self.validateTimedData(process, meta, uid)
