@@ -6,10 +6,7 @@ require_relative 'Endpoints'
 require_relative 'Validation'
 
 class HawkFlowAPI
-    @@hawkFlowApiUrl = "https://api.hawkflow.ai/v1"
-    @@retry_count = 0
-    @@success = false
-    @@response = nil
+    @@hawkFlowApiUrl = "https://api.hawkflow.ai/v1"   
 
     def initialize(api_key="", max_retries=3, wait_time=0.1)
         @api_key = api_key
@@ -37,7 +34,11 @@ class HawkFlowAPI
 
     def self.hawkflow_post(url, data, api_key)
         begin
-            @api_key = Validation.validateApiKey(apiKey);
+            @api_key = Validation.validate_api_key(api_key);
+            
+            retry_count = 0
+            success = false
+            response = nil
 
             while !success && retry_count < @max_retries do
                 begin
