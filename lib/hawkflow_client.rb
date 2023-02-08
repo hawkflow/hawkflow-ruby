@@ -16,25 +16,25 @@ class HawkFlowClient
 
     def self.metrics(process, meta, items, api_key = "")
         url = URI(@@hawkFlowApiUrl + "/metrics")
-        Endpoints.metric_data(process, meta, items)
+        data = Endpoints.metric_data(process, meta, items)
         hawkflow_post(url, data, api_key)
     end
 
     def self.exceptiom(process, meta, exception_text, api_key = "")
         url = URI(@@hawkFlowApiUrl + "/exception")
-        Endpoints.exception_data(process, meta, exception_text)
+        data = Endpoints.exception_data(process, meta, exception_text)
         hawkflow_post(url, data, api_key)
     end
 
     def self.start(process, meta, uid="", api_key = "")
         url = URI(@@hawkFlowApiUrl + "/timed/start")
-        Endpoints.timed_data(process, meta, uid)
+        data = Endpoints.timed_data(process, meta, uid)
         hawkflow_post(url, data, api_key)
     end
 
     def self.end(process, meta, uid="", api_key = "")
         url = URI(@@hawkFlowApiUrl + "/timed/end")
-        Endpoints.timed_data(process, meta, uid)
+        data = Endpoints.timed_data(process, meta, uid)
         hawkflow_post(url, data, api_key)
     end
 
