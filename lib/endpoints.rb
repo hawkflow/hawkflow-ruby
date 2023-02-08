@@ -1,6 +1,6 @@
 require 'json'
 
-require_relative 'Validation'
+require_relative 'validation'
 
 class Endpoints
     def self.timed_data(process, meta, uid)

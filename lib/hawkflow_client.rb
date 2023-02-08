@@ -2,35 +2,35 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-require_relative 'Endpoints'
-require_relative 'Validation'
+require_relative 'endpoints'
+require_relative 'validation'
 
-class HawkFlowAPI
+class HawkFlowClient
     @@hawkFlowApiUrl = "https://api.hawkflow.ai/v1"   
 
     def initialize(api_key="", max_retries=3, wait_time=0.1)
         @api_key = api_key
         @max_retries = max_retries
         @wait_time = wait_time
-    
+    end
+
     def self.metrics(process, meta, items, api_key = "")
-        url = URI(hawkFlowApiUrl + "/metrics")
+        url = URI(@@hawkFlowApiUrl + "/metrics")
         Endpoints.metric_data(process, meta, items)
         hawkflow_post(url, data, api_key)
     end
 
     def self.exceptiom(process, meta, exception_text, api_key = "")
-        url = URI(hawkFlowApiUrl + "/exception")
+        url = URI(@@hawkFlowApiUrl + "/exception")
     end
 
     def self.start(process, meta, uid="", api_key = "")
-        url = URI(hawkFlowApiUrl + "/timed/start")
+        url = URI(@@hawkFlowApiUrl + "/timed/start")
     end
 
     def self.end(process, meta, uid="", api_key = "")
-        url = URI(hawkFlowApiUrl + "/timed/end")
+        url = URI(@@hawkFlowApiUrl + "/timed/end")
     end
-
 
     def self.hawkflow_post(url, data, api_key)
         begin
@@ -58,6 +58,7 @@ class HawkFlowAPI
 
             if success
                 json_response = JSON.parse(response.body)
+            end
         rescue Exception => e
             puts "Error: #{e.message}."            
         end
