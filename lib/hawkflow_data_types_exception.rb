@@ -3,6 +3,6 @@ class HawkFlowDataTypesException < StandardError
     @@message = "HawkFlow data types not set correctly. " + @@docs_url
 
     def initialize(error_message)
-        super(error_message + " " + message)
+        super(error_message + " " + @@message)
     end
 end

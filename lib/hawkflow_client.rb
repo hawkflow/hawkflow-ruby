@@ -34,7 +34,7 @@ class HawkFlowClient
 
     def self.hawkflow_post(url, data, api_key)
         begin
-            @api_key = Validation.validate_api_key(api_key);
+            @api_key = Validation.validate_api_key(api_key)
             
             retry_count = 0
             success = false
