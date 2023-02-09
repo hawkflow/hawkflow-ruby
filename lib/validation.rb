@@ -98,23 +98,23 @@ class Validation
         end
     end
 
-    def self.validate_metric_items(items)
-        if items.is_a?(Array) && items.all? { |hash| hash.is_a?(Hash) && hash.all? { |key, value| key.is_a?(String) && value.is_a?(Float) } }
-            items.each do |hash|
-                if hash[:name] != "name"
-                    raise HawkFlowDataTypesException.new("HawkFlow API metric items parameter hash key must be called 'name'.")
-                end
+    def self.valid_dictionary?(dictionary)
+        dictionary.kind_of?(Hash) && dictionary.keys.all? { |key| key.kind_of?(String) } && dictionary.values.all? { |value| value.kind_of?(Integer) || value.kind_of?(Float) }
+    end
 
-                if hash[:name] =~ pattern
-                    if hash[:name].length > 50
-                        raise HawkFlowDataTypesException.new("HawkFlow API metric items parameter name exceeded max length of 50.")
+    def self.validate_metric_items(items)
+        if self.valid_dictionary?(items)
+            items.each do |key, value|
+                if key =~ pattern
+                    if key.length > 50
+                        raise HawkFlowDataTypesException.new("HawkFlow API metric items hash key max length of 50.")
                     end
                 else
-                    raise HawkFlowDataTypesException.new("HawkFlow API metric items parameter name is in incorrect format.")
+                    raise HawkFlowDataTypesException.new("HawkFlow API metric items hash key is in incorrect format.")
                 end
             end
         else
-            raise HawkFlowDataTypesException.new("HawkFlow API metric items parameter must be an array of hashes where the hash is of type { String => float }.")
+            raise HawkFlowDataTypesException.new("HawkFlow API metric items parameter must be a hash where the hash is of type { String => int or float }.")
         end        
     end
 end

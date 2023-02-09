@@ -48,6 +48,7 @@ tmp/
 *.swp
 *~.nib
 *.~*.twbr
+.versions.conf
 
 local.properties
 .classpath

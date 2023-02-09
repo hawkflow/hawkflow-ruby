@@ -6,7 +6,7 @@ require_relative 'endpoints'
 require_relative 'validation'
 
 class HawkFlowClient
-    @@hawkFlowApiUrl = "https://api.hawkflow.ai/v1"   
+    @@hawkFlowApiUrl = "https://api.hawkflow.ai/v1"
 
     def initialize(api_key="", max_retries=3, wait_time=0.1)
         @api_key = api_key
@@ -14,33 +14,33 @@ class HawkFlowClient
         @wait_time = wait_time
     end
 
-    def self.metrics(process, meta, items, api_key = "")
+    def metrics(process, meta, items)
         url = URI(@@hawkFlowApiUrl + "/metrics")
         data = Endpoints.metric_data(process, meta, items)
-        hawkflow_post(url, data, api_key)
+        hawkflow_post(url, data)
     end
 
-    def self.exceptiom(process, meta, exception_text, api_key = "")
+    def exceptiom(process, meta, exception_text)
         url = URI(@@hawkFlowApiUrl + "/exception")
         data = Endpoints.exception_data(process, meta, exception_text)
-        hawkflow_post(url, data, api_key)
+        hawkflow_post(url, data)
     end
 
-    def self.start(process, meta, uid="", api_key = "")
+    def start(process, meta, uid="")
         url = URI(@@hawkFlowApiUrl + "/timed/start")
         data = Endpoints.timed_data(process, meta, uid)
-        hawkflow_post(url, data, api_key)
+        hawkflow_post(url, data)
     end
 
-    def self.end(process, meta, uid="", api_key = "")
+    def end(process, meta, uid="")
         url = URI(@@hawkFlowApiUrl + "/timed/end")
         data = Endpoints.timed_data(process, meta, uid)
-        hawkflow_post(url, data, api_key)
+        hawkflow_post(url, data)
     end
 
-    def self.hawkflow_post(url, data, api_key)
+    def hawkflow_post(url, data)
         begin
-            @api_key = Validation.validate_api_key(api_key)
+            @api_key = Validation.validate_api_key(@api_key)
             
             retry_count = 0
             success = false
